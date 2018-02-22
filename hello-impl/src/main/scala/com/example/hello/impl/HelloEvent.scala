@@ -21,7 +21,7 @@ sealed trait HelloEvent extends AggregateEvent[HelloEvent]
 /**
   * An event that represents a change in greeting message.
   */
-case class GreetingMessageChanged(message: String) extends HelloEvent
+case class GreetingMessageChanged(message: String, users:List[String]) extends HelloEvent
 
 object GreetingMessageChanged {
 

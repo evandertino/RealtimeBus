@@ -3,7 +3,12 @@ package com.example.hello.impl
 import java.time.LocalDateTime
 
 import akka.Done
+import akka.kafka.scaladsl.Producer
+import akka.stream.scaladsl.Source
+import com.example.hello.api.HelloService
+import com.lightbend.lagom.scaladsl.broker.TopicProducer
 import com.lightbend.lagom.scaladsl.persistence.PersistentEntity
+import org.apache.kafka.clients.producer.ProducerRecord
 
 /**
   * Created by knoldus on 16/2/17.
@@ -27,14 +32,16 @@ class HelloEntity extends PersistentEntity {
     case HelloState(message, _) => Actions().onCommand[UseGreetingMessage, Done] {
 
       // Command handler for the UseGreetingMessage command
-      case (UseGreetingMessage(newMessage), ctx, state) =>
+      case (UseGreetingMessage(newMessage, newUsers), ctx, state) =>
         println("Command UseGreetingMessage")
         // In response to this command, we want to first persist it as a
         // GreetingMessageChanged event
         ctx.thenPersist(
-          GreetingMessageChanged(newMessage)
-        ) { _ =>
+          GreetingMessageChanged(newMessage, newUsers)
+        ) { x =>
           println("Command UseGreetingMessage persist")
+
+//          Source.single(x).map(el => new ProducerRecord(HelloService.TOPIC_NAME, el)).runWith(Producer.plainSink())
           // Then once the event is successfully persisted, we respond with done.
           ctx.reply(Done)
         }
@@ -50,7 +57,7 @@ class HelloEntity extends PersistentEntity {
     }.onEvent {
 
       // Event handler for the GreetingMessageChanged event
-      case (GreetingMessageChanged(newMessage), state) =>
+      case (GreetingMessageChanged(newMessage, newUsers), state) =>
         // We simply update the current state to use the greeting message from
         // the event.
         HelloState(newMessage, LocalDateTime.now().toString)

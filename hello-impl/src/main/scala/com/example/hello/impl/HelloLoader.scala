@@ -4,7 +4,6 @@ package com.example.hello.impl
   * Created by knoldus on 16/2/17.
   */
 import com.example.hello.api.HelloService
-import com.example.hello.impl.sample.helloworld.impl.HelloServiceImpl
 import com.lightbend.lagom.scaladsl.api.ServiceLocator
 import com.lightbend.lagom.scaladsl.api.ServiceLocator.NoServiceLocator
 import com.lightbend.lagom.scaladsl.broker.kafka.LagomKafkaComponents

@@ -44,7 +44,7 @@ lazy val `hello-impl` = (project in file("hello-impl"))
     version := "1.0-SNAPSHOT",
     libraryDependencies ++= Seq(
       lagomScaladslKafkaBroker,
-      "com.typesafe.akka" %% "akka-persistence-cassandra" % "0.81",
+      "com.typesafe.akka" %% "akka-persistence-cassandra" % "0.82",
       lagomScaladslPersistenceCassandra,
       lagomScaladslTestKit,
       lagomScaladslKafkaBroker,

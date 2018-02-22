@@ -45,6 +45,7 @@ abstract class WebGateway(context: Context) extends BuiltInComponentsFromContext
   lazy val chatEngine :ChatEngine = wire[ChatEngine]
   lazy val chatEngineController = chatEngine.controller
   lazy val helloSerive = serviceClient.implement[HelloService]
+//  lazy val source = helloSerive.greetingsTopic().subscribe
 
 }
 

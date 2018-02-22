@@ -18,7 +18,7 @@ sealed trait HelloCommand[R] extends ReplyType[R]
   * It has a reply type of [[Done]], which is sent back to the caller
   * when all the events emitted by this command are successfully persisted.
   */
-case class UseGreetingMessage(message: String) extends HelloCommand[Done]
+case class UseGreetingMessage(message: String, users:List[String]) extends HelloCommand[Done]
 
 object UseGreetingMessage {
 

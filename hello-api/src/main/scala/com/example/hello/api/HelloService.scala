@@ -5,7 +5,7 @@ import com.lightbend.lagom.scaladsl.api.broker.Topic
 import com.lightbend.lagom.scaladsl.api.{Service, ServiceCall}
 import play.api.libs.json.{Format, Json}
 
-case class GreetingMessage(message:String)
+case class GreetingMessage(message:String, sendTo:List[String])
 object GreetingMessage {
   implicit val format = Json.format[GreetingMessage]
 }

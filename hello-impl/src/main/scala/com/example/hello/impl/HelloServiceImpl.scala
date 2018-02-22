@@ -1,7 +1,5 @@
 package com.example.hello.impl
 
-package sample.helloworld.impl
-
 import com.example.hello.api.{GreetingMessage, HelloService}
 import com.lightbend.lagom.scaladsl.api.ServiceCall
 import com.lightbend.lagom.scaladsl.api.broker.Topic
@@ -34,10 +32,15 @@ class HelloServiceImpl(persistentEntityRegistry: PersistentEntityRegistry) exten
     val ref = persistentEntityRegistry.refFor[HelloEntity](id)
 
     // Tell the entity to use the greeting message specified.
-    ref.ask(UseGreetingMessage(request.message))
+    ref.ask(UseGreetingMessage(request.message, request.sendTo))
   }
 
   override def greetingsTopic(): Topic[GreetingMessage] = {
+//    TopicProducer.singleStreamWithOffset{
+//      offset => o
+//    }
+//
+
     TopicProducer.singleStreamWithOffset {
       offset =>
         persistentEntityRegistry.eventStream(HelloEventTag.instance, offset)
@@ -48,7 +51,7 @@ class HelloServiceImpl(persistentEntityRegistry: PersistentEntityRegistry) exten
   private def convertEvent(helloEvent: EventStreamElement[HelloEvent]): GreetingMessage = {
     println(s"converting event ${helloEvent.event}")
     helloEvent.event match {
-      case GreetingMessageChanged(msg) => GreetingMessage(msg)
+      case GreetingMessageChanged(msg, users) => GreetingMessage(msg, users)
     }
   }
 
